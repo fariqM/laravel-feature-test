@@ -7,7 +7,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
         Route::prefix('home')->group(function () {
             Route::get('', 'ProfileController@homePage')->name('home');
             Route::get('edit-profile', 'ProfileController@showProfile')->name('profile');
-            Route::put('edit-profile', 'ProfileController@updateProfile')->name('u.profile');
+            Route::post('edit-profile', 'ProfileController@updateProfile')->name('u.profile');
             Route::delete('delete-profile/{user:id}', 'ProfileController@destroy')->name('d.acc');
         });
         Route::post('/logout', 'LoginController@logoutAction')->name('logout');

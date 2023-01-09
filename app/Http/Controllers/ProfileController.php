@@ -16,7 +16,7 @@ class ProfileController extends Controller
     public function showProfile()
     {
         $user = auth()->user();
-        dd(property_exists($user, "tgl"), $user);
+        
         return view('edit-profile', compact('user'));
     }
     public function updateProfile(Request $request)
@@ -29,7 +29,7 @@ class ProfileController extends Controller
         ]);
         $currentUser = User::findOrFail($userId);
         $currentUser->update($request->all());
-        return redirect()->back()->with('success_update', 'Your profile has been updated!');
+        return redirect('/home/edit-profile')->with('success_update', 'Your profile has been updated!');
     }
 
     public function destroy(User $user, Request $request)

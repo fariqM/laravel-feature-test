@@ -92,7 +92,6 @@
     <div class="container rounded bg-white mt-1 mb-5">
         <form action="{{ route('u.profile') }}" method="POST">
             @csrf
-            @method('PUT')
             <div class="row">
 
                 <div class="col-md-3 border-right">

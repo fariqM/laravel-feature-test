@@ -71,27 +71,53 @@ class FeatureTest extends TestCase
         $test->assertRedirect('home');
     }
 
-    public function test_isi_profil_pengguna()
+    public function test_edit_profile()
     {
         $user = User::where('email', 'fariq@gmail.com')->first();
+        $test = $this->actingAs($user)->post('/home/edit-profile', [
+            'email' => 'fariq@gmail.com',
+            'username' => 'fariq123',
+            'tgl' => '1999-06-18',
+            'address' => 'krian',
+            'quotes' => 'ini quotes',
+            'name' => "fariq maulana"
+        ]);
+        $test->assertRedirect('/home/edit-profile');
+    }
+
+    public function test_isi_profil_pengguna()
+    {
+
+        $user = User::where('email', 'fariq@gmail.com')->first();
         $test = $this->actingAs($user)->get('/home/edit-profile');
-        // $test->dumpSession();
         $test
             ->assertStatus(200)
             ->assertViewHas('user', function (User $user) {
                 return isset($user->email);
             })
             ->assertViewHas('user', function (User $user) {
+                return isset($user->name);
+            })
+            ->assertViewHas('user', function (User $user) {
                 return isset($user->username);
             })
             ->assertViewHas('user', function (User $user) {
-                return property_exists($user, 'tgl');
+                return isset($user->tgl);
+            })
+            ->assertViewHas('user', function (User $user) {
+                return isset($user->quotes);
             });
-            // ->assertViewHas('user', function (User $user) {
-            //     return isset($user->tgl);
-            // })
-            // ->assertViewHas('user', function (User $user) {
-            //     return isset($user->quotes);
-            // });
+    }
+
+    public function test_logout(){
+        $user = User::where('email', 'fariq@gmail.com')->first();
+        $test = $this->actingAs($user)->post('/logout');
+        $test->assertRedirect('/login');
+    }
+
+    public function test_delete_account(){
+        $user = User::where('email', 'fariq@gmail.com')->first();
+        $test = $this->actingAs($user)->delete('/home/delete-profile/'.$user->id);
+        $test->assertRedirect('/login');
     }
 }
